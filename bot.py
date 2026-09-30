@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 TZ = ZoneInfo(os.getenv("TIMEZONE", "Asia/Singapore"))
+TARGET_CHAT_ID = int(os.getenv("TARGET_CHAT_ID", "-1001623940278"))
 ADMIN_IDS = {
     int(x.strip()) for x in os.getenv("ADMIN_IDS", "").split(",")
     if x.strip().isdigit()
@@ -142,7 +143,7 @@ async def approval_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text("This preview has expired. Create it again with /live.")
         return
 
-    chat_id = query.message.chat_id
+    chat_id = TARGET_CHAT_ID
     if pending["photo_file_id"]:
         await context.bot.send_photo(
             chat_id=chat_id,
